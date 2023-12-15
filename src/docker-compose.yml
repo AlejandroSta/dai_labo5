@@ -25,14 +25,36 @@ services:
       - FRONTEND_URL_PORT=80
     ports:
       - 7000:7000
+    depends_on:
+      - lab5-db
     networks:
       - lab5-server
       - lab5-web-site
+      - lab5-db
+
+  lab5-db: #thanks to : https://github.com/bitnami/containers/blob/main/bitnami/postgresql/README.md
+    image: bitnami/postgresql:latest
+    container_name: lab5-db
+    environment:
+      - POSTGRESQL_USERNAME=u_app
+      - POSTGRESQL_PASSWORD=super_secret
+      - POSTGRESQL_DATABASE=db_app
+    volumes:
+      - psql:/bitnami/postgresql
+    ports:
+      - 3306:3306
+    networks:
+      - lab5-db
+
+volumes:
+  psql:
+
 networks:
   lab5-server:
     name: lab5-server
     driver: bridge
   lab5-web-site:
+  lab5-db:
 
 #docker-compose up  --force-recreate -d
 #docker-compose down
