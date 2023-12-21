@@ -4,6 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.http.Context;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
@@ -38,7 +41,6 @@ class DbCtrl {
         ctx.json(users.get(id));*/
         try {
             jdbc.connect();
-
             try {
                 ctx.json(jsonMessage(MSG_DB_HERE));
             } catch (JsonProcessingException e) {
@@ -81,5 +83,36 @@ class DbCtrl {
 
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readTree(sb.toString());
+    }
+
+    public void createUser(Context ctx){
+
+    }
+
+    public void loginUser(Context ctx){
+        try {
+            String s = "select * from user where username = "
+                    + ctx.queryParam("username")
+                    + " and password = "
+                    + ctx.queryParam("password");
+            PreparedStatement ps = jdbc.getPreparedStatement(s);
+            ResultSet r = jdbc.R(ps);
+            if(r.next()) ctx.status(200);
+            else ctx.status(403);
+        }catch (SQLException e){
+            ctx.status(500);
+        }
+    }
+
+    public void getUsers(Context ctx){
+
+    }
+
+    public void updatePassword(Context ctx){
+
+    }
+
+    public void deleteUser(Context ctx){
+
     }
 }
