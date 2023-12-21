@@ -10,7 +10,9 @@ public class Constantes {
     public final static String MSG_DB_NOT_HERE = "Oh oh, db not here!";
     public final static String MSG_DB_HERE = "Connected to Db !";
     public final static String[] MSG_LIST_API = {"/", "List all endpoints.",
-                                                 "/connect", "Connect to DB and give a feedback"};
+                                                 "/connect", "Connect to DB and give a feedback",
+                                                 "", ""
+                                                };
     public final static String MSG_ERROR_JSON_PROCESSING = "Json not parse.";
 
 }

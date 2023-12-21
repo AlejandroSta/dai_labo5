@@ -6,16 +6,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.http.Context;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.io.LineNumberReader;
 
 
-import rest.api.helpers.PostgesqlJDBC;
+import rest.api.helpers.PostgresqlJDBC;
 import static rest.api.helpers.Constantes.*;
 
 class DbCtrl {
-    private final PostgesqlJDBC jdbc;
+    private final PostgresqlJDBC jdbc;
 
-    public DbCtrl(PostgesqlJDBC jdbc) {
+    public DbCtrl(PostgresqlJDBC jdbc) {
         this.jdbc = jdbc;
     }
 
