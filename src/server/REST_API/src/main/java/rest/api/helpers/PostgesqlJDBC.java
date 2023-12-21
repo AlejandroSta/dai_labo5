@@ -1,4 +1,4 @@
-package bdr.projet.helpers;
+package rest.api.helpers;
 
 import java.sql.*;
 import java.util.Properties;

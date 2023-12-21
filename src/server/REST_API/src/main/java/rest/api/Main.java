@@ -19,8 +19,8 @@ public class Main {
         DbCtrl dbCtrl = new DbCtrl(jdbc);
         //app.get("/api/users", dbCtrl::getAll);
 
-        app.get(API_ROOT+MSG_LIST_API[0], dbCtrl::listEndpoints);
-        app.get(API_ROOT+MSG_LIST_API[2], dbCtrl::connect);
+        app.get(API_ROOT + MSG_LIST_API[0], dbCtrl::listEndpoints);
+        app.get(API_ROOT + MSG_LIST_API[2], dbCtrl::connect);
         /*app.post("/api/users/", dbCtrl::create);
         app.put("/api/users/{id}", dbCtrl::update);
         app.delete("/api/users/{id}", dbCtrl::delete);*/

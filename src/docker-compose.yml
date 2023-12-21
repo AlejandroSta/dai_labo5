@@ -24,7 +24,7 @@ services:
       - FRONTEND_URL_DOMAIN_NAME=localhost
       - FRONTEND_URL_PORT=80
     ports:
-      - 7000:7000
+      - 5000:5000
     depends_on:
       - lab5-db
     networks:

@@ -28,9 +28,9 @@ class Service {
         return msg;
     }
 
-    getItems(successFunction) {
+    createUser(successFunction, pseudo, mdp) {
         // envoi de la requête
-        $.ajax({
+        /*$.ajax({
             url : 'https://minecraft-ids.grahamedgecombe.com/items.json',
             type: 'GET',
             dataType : 'json',
@@ -41,13 +41,13 @@ class Service {
                 indexCtrl = new IndexCtrl();
                 indexCtrl.afficherErreurHttp(msg);
             }
-        });
+        });*/
     }
 
-    getEntities(successFunction) {
+    readUser(successFunction) {
         // envoi de la requête
         $.ajax({
-            url : 'https://minecraft-ids.grahamedgecombe.com/entities.json',
+            url : 'http://localhost:5000/api',
             type: 'GET',
             dataType : 'json',
             success: successFunction,

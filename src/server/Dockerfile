@@ -1,6 +1,6 @@
 FROM eclipse-temurin:latest
 
-COPY ./REST_API/out/artifacts/REST_API_jar/REST_API.jar ./app.jar
+COPY ./REST_API/target/REST_API-1.0-SNAPSHOT-jar-with-dependencies.jar ./app.jar
 
 CMD ["java", "-jar", "app.jar"]
 
