@@ -12,7 +12,7 @@ public class Constantes {
     public final static String[] MSG_LIST_API = {
             "/", "List all endpoints.",
             "/loginUser", "Tries to login with a username and password",
-            "/createUser/{id}", "Add a user to the database (only works if the logged user is an admin)",
+            "/createUser", "Add a user to the database (only works if the logged user is an admin)",
             "/getUsers", "Get the list of all users (only works if the logged user is an admin)",
             "/deleteUser", "Tries to delete a user given its username (only works if the logged user is an admin)"
     };
