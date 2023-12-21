@@ -6,7 +6,8 @@
 */
 
 class Service {
-    constructor() {}
+    constructor() {
+    }
 
     centraliserErreurHttp(status, error) {
         let msg;
@@ -23,7 +24,7 @@ class Service {
         } else if (error === "abort") {
             msg = "Requête Ajax stoppée !";
         } else {
-            msg = "Erreur inconnue : \n status : " + status + "\n error : " +error;
+            msg = "Erreur inconnue : \n status : " + status + "\n error : " + error;
         }
         return msg;
     }
@@ -47,11 +48,11 @@ class Service {
     readUser(successFunction) {
         // envoi de la requête
         $.ajax({
-            url : 'http://localhost:5000/api',
+            url: 'http://localhost:5000/api',
             type: 'GET',
-            dataType : 'json',
+            dataType: 'json',
             success: successFunction,
-            error : function(resultat, statut, error){
+            error: function (resultat, statut, error) {
                 service = new Service();
                 let msg = service.centraliserErreurHttp(status, error);
                 indexCtrl = new IndexCtrl();

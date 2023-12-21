@@ -15,7 +15,7 @@ public class Main {
                 })
                 .start(5000);
 
-        PostgesqlJDBC jdbc = new PostgesqlJDBC(DB_URL, DB_USER, DB_PASSWORD);
+        PostgresqlJDBC jdbc = new PostgresqlJDBC(DB_URL, DB_USER, DB_PASSWORD);
         DbCtrl dbCtrl = new DbCtrl(jdbc);
         //app.get("/api/users", dbCtrl::getAll);
 

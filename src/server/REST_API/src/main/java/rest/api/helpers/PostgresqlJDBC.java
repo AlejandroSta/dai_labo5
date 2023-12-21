@@ -71,7 +71,7 @@ public class PostgresqlJDBC {
         db = DriverManager.getConnection(url, props);
     }
 
-    public boolean isConnected(){
+    public boolean isConnected() {
         return db != null;
     }
 

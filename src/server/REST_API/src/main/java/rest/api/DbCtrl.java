@@ -12,6 +12,7 @@ import java.util.HashMap;
 
 
 import rest.api.helpers.PostgresqlJDBC;
+
 import static rest.api.helpers.Constantes.*;
 
 class DbCtrl {
@@ -24,15 +25,15 @@ class DbCtrl {
     public void listEndpoints(Context ctx) {
         try {
             HashMap<String, String> t = new HashMap<>();
-            for(int i = 0; i+1 < MSG_LIST_API.length; i+=2){
-                t.put(MSG_LIST_API[i], MSG_LIST_API[i+1]);
+            for (int i = 0; i + 1 < MSG_LIST_API.length; i += 2) {
+                t.put(MSG_LIST_API[i], MSG_LIST_API[i + 1]);
             }
 
             ctx.json(toJson(t));
         } catch (JsonProcessingException e) {
-            System.out.println(MSG_ERROR_JSON_PROCESSING+
-                    " Line : "+ e.getStackTrace()[12].getLineNumber()+
-                    ", "+getClass().getSimpleName());
+            System.out.println(MSG_ERROR_JSON_PROCESSING +
+                    " Line : " + e.getStackTrace()[12].getLineNumber() +
+                    ", " + getClass().getSimpleName());
         }
     }
 
@@ -44,17 +45,17 @@ class DbCtrl {
             try {
                 ctx.json(jsonMessage(MSG_DB_HERE));
             } catch (JsonProcessingException e) {
-                System.out.println(MSG_ERROR_JSON_PROCESSING+
-                        " Line : "+ e.getStackTrace()[12].getLineNumber()+
-                        ", "+getClass().getSimpleName());
+                System.out.println(MSG_ERROR_JSON_PROCESSING +
+                        " Line : " + e.getStackTrace()[12].getLineNumber() +
+                        ", " + getClass().getSimpleName());
             }
         } catch (SQLException ex) {
             try {
-                ctx.json(jsonMessage(MSG_DB_NOT_HERE+"\\"));
+                ctx.json(jsonMessage(MSG_DB_NOT_HERE + "\\"));
             } catch (JsonProcessingException e) {
-                System.out.println(MSG_ERROR_JSON_PROCESSING+
-                        " Line : "+ e.getStackTrace()[12].getLineNumber()+
-                        ", "+getClass().getSimpleName());
+                System.out.println(MSG_ERROR_JSON_PROCESSING +
+                        " Line : " + e.getStackTrace()[12].getLineNumber() +
+                        ", " + getClass().getSimpleName());
             }
         }
     }
@@ -85,11 +86,11 @@ class DbCtrl {
         return objectMapper.readTree(sb.toString());
     }
 
-    public void createUser(Context ctx){
+    public void createUser(Context ctx) {
 
     }
 
-    public void loginUser(Context ctx){
+    public void loginUser(Context ctx) {
         try {
             String s = "select * from user where username = "
                     + ctx.queryParam("username")
@@ -97,22 +98,22 @@ class DbCtrl {
                     + ctx.queryParam("password");
             PreparedStatement ps = jdbc.getPreparedStatement(s);
             ResultSet r = jdbc.R(ps);
-            if(r.next()) ctx.status(200);
+            if (r.next()) ctx.status(200);
             else ctx.status(403);
-        }catch (SQLException e){
+        } catch (SQLException e) {
             ctx.status(500);
         }
     }
 
-    public void getUsers(Context ctx){
+    public void getUsers(Context ctx) {
 
     }
 
-    public void updatePassword(Context ctx){
+    public void updatePassword(Context ctx) {
 
     }
 
-    public void deleteUser(Context ctx){
+    public void deleteUser(Context ctx) {
 
     }
 }
