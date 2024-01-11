@@ -5,7 +5,7 @@ public class Constantes {
     public final static String DB_USER = "u_app";
     public final static String DB_PASSWORD = "super_secret";
 
-    public final static String API_ROOT = "/api";
+    public final static String API_ROOT = "";
 
     public final static String MSG_DB_NOT_HERE = "Oh oh, db not here!";
     public final static String MSG_DB_HERE = "Connected to Db !";
