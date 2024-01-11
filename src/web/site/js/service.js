@@ -30,20 +30,29 @@ class Service {
     }
 
     createUser(successFunction, pseudo, mdp) {
-        // envoi de la requête
-        /*$.ajax({
-            url : 'https://minecraft-ids.grahamedgecombe.com/items.json',
-            type: 'GET',
-            dataType : 'json',
+        // Préparation des données à envoyer
+        let userData = {
+            pseudo: pseudo,
+            mdp: mdp
+        };
+
+        // Envoi de la requête
+        $.ajax({
+            url: 'http://localhost:5000/api/users',
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(userData),
             success: successFunction,
-            error : function(resultat, statut, error){
-                service = new Service();
+            error: function (res, status, error) {
+                let service = new Service();
                 let msg = service.centraliserErreurHttp(status, error);
-                indexCtrl = new IndexCtrl();
+                let indexCtrl = new IndexCtrl();
                 indexCtrl.afficherErreurHttp(msg);
             }
-        });*/
+        });
     }
+
 
     readUser(successFunction) {
         // envoi de la requête
@@ -52,10 +61,10 @@ class Service {
             type: 'GET',
             dataType: 'json',
             success: successFunction,
-            error: function (resultat, statut, error) {
-                service = new Service();
+            error: function (res, status, error) {
+                let service = new Service();
                 let msg = service.centraliserErreurHttp(status, error);
-                indexCtrl = new IndexCtrl();
+                let indexCtrl = new IndexCtrl();
                 indexCtrl.afficherErreurHttp(msg);
             }
         });

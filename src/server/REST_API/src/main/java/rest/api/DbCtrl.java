@@ -15,7 +15,7 @@ import rest.api.helpers.PostgresqlJDBC;
 
 import static rest.api.helpers.Constantes.*;
 
-class DbCtrl {
+public class DbCtrl {
     private final PostgresqlJDBC jdbc;
 
     public DbCtrl(PostgresqlJDBC jdbc) {
