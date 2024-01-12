@@ -4,7 +4,7 @@ import io.javalin.*;
 import io.javalin.plugin.bundled.CorsPluginConfig;
 import rest.api.helpers.*;
 
-import static rest.api.helpers.Constantes.*;
+import static rest.api.helpers.Constants.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -21,9 +21,10 @@ public class Main {
 
         app.get(API_ROOT + MSG_LIST_API[0], dbCtrl::listEndpoints);
         app.get(API_ROOT + MSG_LIST_API[2], dbCtrl::connect);
-        /*app.post("/api/users/", dbCtrl::create);
-        app.put("/api/users/{id}", dbCtrl::update);
-        app.delete("/api/users/{id}", dbCtrl::delete);*/
+        app.post(API_ROOT + MSG_LIST_API[4], dbCtrl::loginUser);
+        app.put(API_ROOT + MSG_LIST_API[6], dbCtrl::createUser);
+        app.patch(API_ROOT + MSG_LIST_API[8], dbCtrl::updatePassword);
+        app.delete(API_ROOT + MSG_LIST_API[10], dbCtrl::deleteUser);
         System.out.println("Launched API!");
     }
 }

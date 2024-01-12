@@ -6,7 +6,9 @@
 */
 
 class Service {
+
     constructor() {
+        this.serverAdd = 'http://localhost:5000/api/';
     }
 
     centraliserErreurHttp(status, error) {
@@ -32,14 +34,14 @@ class Service {
     createUser(successFunction, pseudo, mdp) {
         // Préparation des données à envoyer
         let userData = {
-            pseudo: pseudo,
-            mdp: mdp
+            username: pseudo,
+            password: mdp
         };
 
         // Envoi de la requête
         $.ajax({
-            url: 'http://localhost:5000/api/users',
-            type: 'POST',
+            url: this.serverAdd + 'createUser',
+            type: 'put',
             dataType: 'json',
             contentType: 'application/json',
             data: JSON.stringify(userData),
@@ -53,11 +55,98 @@ class Service {
         });
     }
 
+    updateUser(successFunction, pseudo, mdp) {
+        // Préparation des données à envoyer
+        let userData = {
+            username: pseudo,
+            password: mdp
+        };
 
-    readUser(successFunction) {
+        // Envoi de la requête
+        $.ajax({
+            url: this.serverAdd + 'updatePassword',
+            type: 'patch',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(userData),
+            success: successFunction,
+            error: function (res, status, error) {
+                let service = new Service();
+                let msg = service.centraliserErreurHttp(status, error);
+                let indexCtrl = new IndexCtrl();
+                indexCtrl.afficherErreurHttp(msg);
+            }
+        });
+    }
+
+    deleteUser(successFunction, pseudo) {
+        // Préparation des données à envoyer
+        let userData = {
+            username: pseudo
+        };
+
+        // Envoi de la requête
+        $.ajax({
+            url: this.serverAdd + 'deleteUser',
+            type: 'delete',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(userData),
+            success: successFunction,
+            error: function (res, status, error) {
+                let service = new Service();
+                let msg = service.centraliserErreurHttp(status, error);
+                let indexCtrl = new IndexCtrl();
+                indexCtrl.afficherErreurHttp(msg);
+            }
+        });
+    }
+
+    loginUser(successFunction, pseudo, mdp) {
+        // Préparation des données à envoyer
+        let userData = {
+            username: pseudo,
+            password: mdp
+        };
+
+        // Envoi de la requête
+        $.ajax({
+            url: this.serverAdd + 'loginUser',
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(userData),
+            success: successFunction,
+            error: function (res, status, error) {
+                let service = new Service();
+                let msg = service.centraliserErreurHttp(status, error);
+                let indexCtrl = new IndexCtrl();
+                indexCtrl.afficherErreurHttp(msg);
+            }
+        });
+    }
+
+    connect(successFunction) {
         // envoi de la requête
         $.ajax({
-            url: 'http://localhost:5000/api',
+            url: this.serverAdd + "connect",
+            type: 'GET',
+            dataType: 'json',
+            success: successFunction,
+            error: function (res, status, error) {
+                let service = new Service();
+                let msg = service.centraliserErreurHttp(status, error);
+                let indexCtrl = new IndexCtrl();
+                indexCtrl.afficherErreurHttp(msg);
+            }
+        });
+    }
+
+
+    listApi(successFunction) {
+        // envoi de la requête
+        $.ajax({
+            url: this.serverAdd,
             type: 'GET',
             dataType: 'json',
             success: successFunction,

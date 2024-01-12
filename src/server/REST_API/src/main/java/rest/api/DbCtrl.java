@@ -13,13 +13,15 @@ import java.util.HashMap;
 
 import rest.api.helpers.PostgresqlJDBC;
 
-import static rest.api.helpers.Constantes.*;
+import static rest.api.helpers.Constants.*;
 
 public class DbCtrl {
     private final PostgresqlJDBC jdbc;
+    private String loggedUser;
 
     public DbCtrl(PostgresqlJDBC jdbc) {
         this.jdbc = jdbc;
+        connect();
     }
 
     public void listEndpoints(Context ctx) {
@@ -37,27 +39,17 @@ public class DbCtrl {
         }
     }
 
-    public void connect(Context ctx) {
-        /*int id = Integer.parseInt(ctx.pathParam("id"));
-        ctx.json(users.get(id));*/
+    public boolean connect() {
         try {
             jdbc.connect();
-            try {
-                ctx.json(jsonMessage(MSG_DB_HERE));
-            } catch (JsonProcessingException e) {
-                System.out.println(MSG_ERROR_JSON_PROCESSING +
-                        " Line : " + e.getStackTrace()[12].getLineNumber() +
-                        ", " + getClass().getSimpleName());
-            }
-        } catch (SQLException ex) {
-            try {
-                ctx.json(jsonMessage(MSG_DB_NOT_HERE + "\\"));
-            } catch (JsonProcessingException e) {
-                System.out.println(MSG_ERROR_JSON_PROCESSING +
-                        " Line : " + e.getStackTrace()[12].getLineNumber() +
-                        ", " + getClass().getSimpleName());
-            }
+            return jdbc.isConnected();
+        } catch (SQLException ignored) {
+            return false;
         }
+    }
+
+    public void connect(Context ctx) {
+        ctx.json(connect());
     }
 
     private JsonNode jsonMessage(String message) throws JsonProcessingException {
@@ -86,34 +78,89 @@ public class DbCtrl {
         return objectMapper.readTree(sb.toString());
     }
 
-    public void createUser(Context ctx) {
+    private HashMap<String, String> jsonStringToHashMap(String s) {
+        HashMap<String, String> h = new HashMap<>();
 
+        s = s.replace("{","");
+        s = s.replace("}","");
+        s = s.replace(" ","");
+        s = s.replace("\"","");
+
+        for(String line : s.split(",")) {
+            h.put(line.split(":")[0], line.split(":")[1]);
+        }
+
+        return h;
     }
 
-    public void loginUser(Context ctx) {
+    public void createUser(Context ctx){
         try {
-            String s = "select * from user where username = "
-                    + ctx.queryParam("username")
-                    + " and password = "
-                    + ctx.queryParam("password");
-            PreparedStatement ps = jdbc.getPreparedStatement(s);
-            ResultSet r = jdbc.R(ps);
-            if (r.next()) ctx.status(200);
-            else ctx.status(403);
+            PreparedStatement ps = jdbc.getPreparedStatement(RQ_CREATE_USER);
+            HashMap<String, String> json = jsonStringToHashMap(ctx.body());
+            ps.setString(1, json.get("username"));
+            ps.setString(2, json.get("password"));
+            int r = jdbc.CUD(ps);
+            if(r != 1) throw new SQLException();
+            ctx.status(200);
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            try {
+                ctx.json(jsonMessage(e.getMessage()));
+            } catch (Exception ignored){}
             ctx.status(500);
         }
     }
 
-    public void getUsers(Context ctx) {
-
+    public void loginUser(Context ctx) {
+        try {
+            PreparedStatement ps = jdbc.getPreparedStatement(RQ_GET_USER);
+            HashMap<String, String> json = jsonStringToHashMap(ctx.body());
+            ps.setString(1, json.get("username"));
+            ResultSet r = jdbc.R(ps);
+            r.next();
+            if(r.getString(1).equals(json.get("password"))) ctx.status(200);
+            else ctx.status(403);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            try {
+                ctx.json(jsonMessage(e.getMessage()));
+            } catch (Exception ignored){}
+            ctx.status(500);
+        }
     }
 
     public void updatePassword(Context ctx) {
-
+        try {
+            PreparedStatement ps = jdbc.getPreparedStatement(RQ_UPDATE_USER);
+            HashMap<String, String> json = jsonStringToHashMap(ctx.body());
+            ps.setString(1, json.get("password"));
+            ps.setString(2, json.get("username"));
+            int r = jdbc.CUD(ps);
+            if(r != 1) throw new SQLException();
+            ctx.status(200);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            try {
+                ctx.json(jsonMessage(e.getMessage()));
+            } catch (Exception ignored){}
+            ctx.status(500);
+        }
     }
 
     public void deleteUser(Context ctx) {
-
+        try {
+            PreparedStatement ps = jdbc.getPreparedStatement(RQ_DELETE_USER);
+            HashMap<String, String> json = jsonStringToHashMap(ctx.body());
+            ps.setString(1, json.get("username"));
+            int r = jdbc.CUD(ps);
+            if(r != 1) throw new SQLException();
+            ctx.status(200);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            try {
+                ctx.cookie("message", e.getMessage());
+            } catch (Exception ignored){}
+            ctx.status(500);
+        }
     }
 }
