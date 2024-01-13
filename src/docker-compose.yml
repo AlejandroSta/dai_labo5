@@ -14,7 +14,11 @@ services:
     depends_on:
       - lab5-db
     labels:
+      - traefik.enable=true
       - traefik.http.routers.lab5-server.rule=Host(`localhost`) && PathPrefix(`/api`)
+      - traefik.http.services.web.loadbalancer.server.port=5000
+      - traefik.http.services.api.loadBalancer.sticky.cookie=true
+      - traefik.http.services.api.loadBalancer.sticky.cookie.name=api-cookie
 
   lab5-web-site:
     build:
@@ -23,7 +27,9 @@ services:
     depends_on:
       - lab5-server
     labels:
+      - traefik.enable=true
       - traefik.http.routers.lab5-web-site.rule=Host(`localhost`)
+      - traefik.http.services.web.loadbalancer.server.port=80
 
   lab5-db: #thanks to : https://github.com/bitnami/containers/blob/main/bitnami/postgresql/README.md
     image: bitnami/postgresql:latest
@@ -36,12 +42,15 @@ services:
       - psql:/bitnami/postgresql
     ports:
       - 3306:3306
+    labels:
+      - traefik.enable=false
 
   traefik:
-    image: traefik
+    image: traefik:v2.10
     command:
       - --api.insecure=true  # Enable Traefik dashboard
       - --providers.docker
+      - --log.level=INFO
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
