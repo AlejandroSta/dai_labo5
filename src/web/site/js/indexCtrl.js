@@ -26,67 +26,46 @@ class IndexCtrl {
         });
     }
 
+    callbackApi(json) {
+        alert(JSON.stringify(json));
+    }
+
     callCreate() {
         const pseudo = prompt("pseudo");
         const mdp = prompt("password");
 
-        service.readUser(this.readUser, pseudo, mdp);
+        service.createUser(this.callbackApi, pseudo, mdp);
 
     }
 
-    readUser(users) {
-        alert(JSON.stringify(users));
+    callUpdate() {
+        const pseudo = prompt("pseudo");
+        const mdp = prompt("password");
+
+        service.updateUser(this.callbackApi, pseudo, mdp);
+
     }
 
-    createUser(entities) {
-        /*let divInfo = document.getElementById("info");
-        divInfo.innerHTML =
-            '<h3 id="entitiesTitle"> liste des Entitées</h3></br><div id="entities">';
-        let divEntities = document.getElementById("entities");
+    callDelete() {
+        const pseudo = prompt("pseudo");
 
-        for (let i = 0; i < numberTimesEntities; i++) {
-          let flexrowId = (i-(i%3))/3;
-          if ((i === 0)||(i % 3 === 0)) {
-            divEntities.innerHTML += '<div class="flexrow" id="flexrow'+ flexrowId +'">';
-          }
-          let divFlexrow = document.getElementById("flexrow"+flexrowId);
-          let entity = entities[i];
-          divFlexrow.innerHTML +=
-              '<div class="row"><div class="id">' +
-              entity.type +
-              '</div><div class="icon"><div id="' +
-              entity.type +
-              '"></div></div><div class="nameDesc"><span class="name">' +
-              entity.name +
-              '</span><br/><span class="text-id">(' +
-              entity.text_type +
-              ")</span></div></div>";
+        service.deleteUser(this.callbackApi, pseudo);
 
-          let id = "#" + entity.type;
-          $(id).css({
-            width: "32px",
-            height: "32px",
-            background:
-                "url(http://goning.emf-informatique.ch/307/projet/images/entities/" +
-                entity.type +
-                ".png) 0 0 no-repeat"
-          });
-        }
-        divInfo.innerHTML +=
-            '<br/><br/><button id="entityButton" onclick="entitiesCtrl.viewAll();"></button>';
-        if (numberTimesEntities === 10) {
-          numberTimesEntities = entities.length;
-          let butt = document.getElementById("entityButton");
-          butt.innerHTML = "Voir Plus";
-        } else {
-          numberTimesEntities = 10;
-          let butt = document.getElementById("entityButton");
-          butt.innerHTML = "Voir Moins";
-        }
-        /* {
-            "type":1,
-            "name":"Dropped Item",
-            "text_type":"item"
-        }*/
+    }
+
+    callLogin() {
+        const pseudo = prompt("pseudo");
+        const mdp = prompt("password");
+
+        service.loginUser(this.callbackApi, pseudo, mdp);
+
+    }
+
+    callConnect() {
+        service.connect(this.callbackApi);
+    }
+
+    callListApi() {
+        service.listApi(this.callbackApi);
     }
 }

@@ -6,7 +6,7 @@ services:
       context: ./server
       dockerfile: Dockerfile
     environment:
-      - PORT=7000
+      - PORT=5000
       - ADMIN_PASSWORD=passwordToSet
       - FRONTEND_URL_PROTOCOL=http://
       - FRONTEND_URL_DOMAIN_NAME=localhost
@@ -41,7 +41,7 @@ services:
     volumes:
       - psql:/bitnami/postgresql
     ports:
-      - 3306:3306
+      - 3306:5432
     labels:
       - traefik.enable=false
 
