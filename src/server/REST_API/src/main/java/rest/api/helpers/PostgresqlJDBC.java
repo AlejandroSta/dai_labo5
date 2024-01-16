@@ -91,6 +91,7 @@ public class PostgresqlJDBC {
 
     public boolean LDD(PreparedStatement request) throws SQLException {
         boolean res = request.execute();
+        System.out.println("not here");
         request.close();
         return res;
     }

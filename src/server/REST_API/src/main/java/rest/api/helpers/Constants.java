@@ -18,7 +18,7 @@ public class Constants {
             "/deleteUser", "Tries to delete a user given its username"
     };
     public final static String MSG_ERROR_JSON_PROCESSING = "Json not parse.";
-    public final static String RQ_CREATE_TABLE = "CREATE TABLE _user(username text, password text NOT NULL, PRIMARY KEY (username));";
+    public final static String RQ_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS _user(username text, password text NOT NULL, PRIMARY KEY (username));";
     public final static String RQ_GET_USER = "SELECT password FROM _user WHERE username=?;";
     public final static String RQ_CREATE_USER = "INSERT INTO _user VALUES (?, ?);";
     public final static String RQ_UPDATE_USER = "UPDATE _user SET password=? WHERE username=?;";

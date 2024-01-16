@@ -22,7 +22,6 @@ public class DbCtrl {
 
     public DbCtrl(PostgresqlJDBC jdbc) {
         this.jdbc = jdbc;
-        connect();
     }
 
     public void listEndpoints(Context ctx) {
@@ -40,17 +39,26 @@ public class DbCtrl {
         }
     }
 
-    public boolean connect() {
+    public HashMap<String, String> connect(String cookie) {
         try {
             jdbc.connect();
-            return jdbc.isConnected();
+
+            HashMap<String, String> hashMap = new HashMap<>();
+
+            if(!isCreated){
+                jdbc.LDD(jdbc.getPreparedStatement(RQ_CREATE_TABLE));
+                isCreated = true;
+                hashMap.put("Database sucessfully created by user : ", cookie);
+            }
+            hashMap.put("Connexion status : ", Boolean.valueOf(jdbc.isConnected()).toString());
+            return hashMap;
         } catch (SQLException ignored) {
-            return false;
+            return null;
         }
     }
 
     public void connect(Context ctx) {
-        ctx.json(connect());
+        ctx.json(connect(ctx.cookie("server-cookie")));
     }
 
     private JsonNode jsonMessage(String message) throws JsonProcessingException {
