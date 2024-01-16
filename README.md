@@ -91,7 +91,7 @@ The steps to follow for this section are thus:
 - [ ] In the demo you can access each server from the browser in the demo. You can prove that the routing is done correctly through the reverse proxy.
 - [ ] You are able to explain how you have implemented the solution and walk us through the configuration and the code.
 - [ ] You are able to explain why a reverse proxy is useful to improve the security of the infrastructure.
-- [ ] You are able to explain how to access the dashboard of Traefik and how it works.
+- [x] You are able to explain how to access the dashboard of Traefik and how it works.
 - [ ] You have **documented** your configuration in your report.
 
 
@@ -104,7 +104,7 @@ Modify your docker compose file such that several instances of each server are s
 
 ### Acceptance criteria
 
-- [ ] You can use docker compose to start the infrastructure with several instances of each server (static and dynamic).
+- [x] You can use docker compose to start the infrastructure with several instances of each server (static and dynamic).
 - [ ] You can dynamically add and remove instances of each server.
 - [ ] You can do a demo to show that Traefik performs load balancing among the instances.
 - [ ] If you add or remove instances, you can show that the load balancer is dynamically updated to use the available instances.
