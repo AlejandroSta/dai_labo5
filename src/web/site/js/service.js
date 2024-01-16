@@ -8,7 +8,7 @@
 class Service {
 
     constructor() {
-        this.serverAdd = 'http://localhost:5000/api/';
+        this.serverAdd = 'http://localhost/api/';
     }
 
     centraliserErreurHttp(status, error) {

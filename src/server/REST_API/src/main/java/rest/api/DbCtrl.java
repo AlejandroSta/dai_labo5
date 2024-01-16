@@ -16,6 +16,7 @@ import rest.api.helpers.PostgresqlJDBC;
 import static rest.api.helpers.Constants.*;
 
 public class DbCtrl {
+    private boolean isCreated = false;
     private final PostgresqlJDBC jdbc;
     private String loggedUser;
 
