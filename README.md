@@ -4,28 +4,7 @@ DAI Lab - HTTP infrastructure
 Objectives
 ----------
 
-The main objective of this lab is to learn to build a complete Web infrastructure. This means, we will build a server infrastructure that serves a static Web site and a dynamic HTTP API. The diagram below shows the architecture of the infrastructure that we will build.
-
-```mermaid
-graph LR
-    subgraph Client
-        B((Browser))
-    end
-    subgraph Server
-        RP(Reverse\nProxy)
-        SS(Static\nWeb server)
-        DS(Dynamic\nAPI server)
-    end
-    B -.-> RP
-    RP --> SS
-    RP --> DS
-```
-
-In addition to the basic requirement of service static and dynamic content, the infrastructure will have the following features:
-
-- **Scalability**: both the static and the dynamic server will be deployed as a cluster of several instances. The reverse proxy will be configured to distribute the load among the instances.
-- **Security**: the connection between the browser and the reverse proxy will be encrypted using HTTPS.
-- **Management**: a Web application will be deployed to manage the infrastructure. This application will allow to start/stop instances of the servers and to monitor the state of the infrastructure.
+Our app manages a database of users, the basic CRUD operations are presents, such as creating a new user, login (which reads from the database), updating one's password and deleting an user.
 
 General instructions
 --------------------
@@ -39,79 +18,53 @@ General instructions
 - The report must contain the procedure that you have followed to prove that your configuration is correct (what you did do make the step work and what you would do if you were doing a demo).
 
 
-Step 0: GitHub repository
--------------------------
-
-Create a GitHub repository for your project. You will use this repository to collaborate with your team mate. You will also use it to submit your work. 
-
-> [!IMPORTANT]
-> Be careful to keep a clear structure of the repository such that the different components are clearly separated.
-
-### Acceptance criteria
-
-- [ ] You have created a GitHub repository for your project.
-- [ ] The respository contains a Readme file that you will use to document your project.
-
-
 Step 1: Static Web site
 -----------------------
 
-The goal of this step is to build a Docker image that contains a static HTTP server Nginx. The server will serve a static Web site. The static Web site will be a single page with a nice looking template. You can use a free template for example from [Free-CSS](https://www.free-css.com/free-css-templates) or [Start Bootstrap](https://startbootstrap.com/themes).
+We reused a website that Guillaume Gonin already created beforehand and put it in the ./src/web/site folder. A very basic nginx set up was used.
 
 ### Acceptance criteria
 
-- [ ] You have created a separate folder in your respository for your static Web server.
-- [ ] You have a Dockerfile based on the Nginx image. The Dockerfile copies the static site content into the image.
+- [x] You have created a separate folder in your respository for your static Web server.
+- [x] You have a Dockerfile based on the Nginx image. The Dockerfile copies the static site content into the image.
 - [ ] You have configured the `nginx.conf` configuration file to serve the static content on a port (normally 80).
 - [ ] You are able to explain the content of the `nginx.conf` file.
-- [ ] You can run the image and access the static content from a browser.
+- [x] You can run the image and access the static content from a browser.
 - [ ] You have **documented** your configuration in your report.
 
 
 Step 2: Docker compose
 ----------------------
 
-The goal of this step is to use Docker compose to deploy a first version of the infrastructure with a single service: the static Web server.
+The docker-compose.yml file can be found at ./src.
 
-In addition to the basic docker compose configuration, we want to be able to rebuild the docker image of the Web server. See the [Docker compose Build documentation](https://docs.docker.com/compose/compose-file/build/) for this part.
+Regarding the website, we specify the path inside the docker container, set up the traefik config (access via localhost on port 80) and deploy five replicas.
+
+The same configuration is made for the server and database with a few differences. Notably, the server sets a cookie in order to use sticky sessions, there is an "/api" prefix to it.
 
 ### Acceptance criteria
 
-- [ ] You have added a docker compose configuration file to your GitHub repo.
-- [ ] You can start and stop an infrastructure with a single static Web server using docker compose.
-- [ ] You can access the Web server on your local machine on the respective port.
-- [ ] You can rebuild the docker image with `docker compose build`
-- [ ] You have **documented** your configuration in your report.
+- [x] You have added a docker compose configuration file to your GitHub repo.
+- [x] You can start and stop an infrastructure with a single static Web server using docker compose.
+- [x] You can access the Web server on your local machine on the respective port.
+- [x] You can rebuild the docker image with `docker compose build`
+- [x] You have **documented** your configuration in your report.
 
 
 Step 3: HTTP API server
 -----------------------
 
-This step requires a more work. The goal is to build a HTTP API with Javalin. You can implement any API of your choice, such as:
-
-- an API to manage a list of quotes of the day
-- an API to manage a list of TODO items
-- an API to manage a list of people
-
-Use your imagination and be creative!
-
-The only requirement is that the API supports at all CRUD operations, i.e.: Create, Read, Update, Delete. 
-
-Use a API testing tool such as Insomnia, Hoppscotch or Bruno to test all these operations.
-
-The server does not need to use a database. You can store the data in memory. But if you want to add a DB, feel free to do so.
-
-Once you're finished with the implementation, create a Dockerfile for the API server. Then add it as a service to your docker compose configuration.
+As previously mentionned, we chose to create a user list manager. All CRUD operations were mentionned earlier.
 
 ### Acceptance criteria
 
-- [ ] Your API supports all CRUD operations.
-- [ ] You are able to explain your implementation and walk us through the code.
-- [ ] You can start and stop the API server using docker compose.
+- [x] Your API supports all CRUD operations.
+- [x] You are able to explain your implementation and walk us through the code.
+- [x] You can start and stop the API server using docker compose.
 - [ ] You can access both the API and the static server from your browser.
-- [ ] You can rebuild the docker image with docker compose.
-- [ ] You can do demo where use an API testing tool to show that all CRUD operations work.
-- [ ] You have **documented** your implementation in your report.
+- [x] You can rebuild the docker image with docker compose.
+- [x] You can do demo where use an API testing tool to show that all CRUD operations work.
+- [x] You have **documented** your implementation in your report.
 
 
 Step 4: Reverse proxy with Traefik
