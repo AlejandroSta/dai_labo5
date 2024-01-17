@@ -1,21 +1,10 @@
 DAI Lab - HTTP infrastructure
 =============================
 
-Objectives
+The application and the HTTP API server
 ----------
 
-Our app manages a database of users, the basic CRUD operations are presents, such as creating a new user, login (which reads from the database), updating one's password and deleting an user.
-
-General instructions
---------------------
-
-- This is a **BIG** lab and you will need a lot of time to complete it. 
-- You will work in **groups of 2 students** and use a Git workflow to collaborate.
-- For certain steps you will need to do research in the documentation by yourself (we are here to help, but we will not give you step-by-step instructions!) or you will need to be creative (do not expect complete guidelines).
-- Read carefully all the **acceptance criteria** of each step. They will tell you what you need to do to complete the step.
-- After the lab, each group will perform a short **demo** of their infrastructure.
-- **You have to write a report with a short descriptioin for each of the steps.** Please do that directly in the repo, in one or more markdown files. Start in the README.md file at the root of your directory.
-- The report must contain the procedure that you have followed to prove that your configuration is correct (what you did do make the step work and what you would do if you were doing a demo).
+Our app manages a database of users, the basic CRUD operations are presents, such as creating a new user, login (which reads from the database), updating one's password and deleting an user. The server was built using Java with the Javalin library.
 
 
 Step 1: Static Web site
