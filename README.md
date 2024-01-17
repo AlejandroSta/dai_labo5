@@ -7,37 +7,20 @@ The application and the HTTP API server
 Our app manages a database of users, the basic CRUD operations are presents, such as creating a new user, login (which reads from the database), updating one's password and deleting an user. The server was built using Java with the Javalin library.
 
 
-Step 1: Static Web site
+Static Web site
 -----------------------
 
-We reused a website that Guillaume Gonin already created beforehand and put it in the ./src/web/site folder. A very basic nginx set up was used.
-
-### Acceptance criteria
-
-- [x] You have created a separate folder in your respository for your static Web server.
-- [x] You have a Dockerfile based on the Nginx image. The Dockerfile copies the static site content into the image.
-- [ ] You have configured the `nginx.conf` configuration file to serve the static content on a port (normally 80).
-- [ ] You are able to explain the content of the `nginx.conf` file.
-- [x] You can run the image and access the static content from a browser.
-- [ ] You have **documented** your configuration in your report.
+We reused a website that Guillaume Gonin already created beforehand and put it in the ./src/web/site folder. A very basic nginx set up was used, we didn't bother creating a nginx.conf file since the default nginx configuration was enough for our needs.
 
 
-Step 2: Docker compose
+Docker compose
 ----------------------
 
 The docker-compose.yml file can be found at ./src.
 
 Regarding the website, we specify the path inside the docker container, set up the traefik config (access via localhost on port 80) and deploy five replicas.
 
-The same configuration is made for the server and database with a few differences. Notably, the server sets a cookie in order to use sticky sessions, there is an "/api" prefix to it.
-
-### Acceptance criteria
-
-- [x] You have added a docker compose configuration file to your GitHub repo.
-- [x] You can start and stop an infrastructure with a single static Web server using docker compose.
-- [x] You can access the Web server on your local machine on the respective port.
-- [x] You can rebuild the docker image with `docker compose build`
-- [x] You have **documented** your configuration in your report.
+The same configuration is made for the server and database with a few differences. Notably, the server sets a cookie in order to use sticky sessions, there is an "/api" prefix to it, as for the database there is no replicas as we don't want multiple instances of it.
 
 
 Step 3: HTTP API server
