@@ -1,36 +1,32 @@
 version: "3.8"
 services:
-  lab5-web-site:
-    build:
-      context: ./web/site
-      dockerfile: Dockerfile
-    container_name: lab5-web-site
-    ports:
-      - 80:80
-    depends_on:
-      - lab5-server
-    networks:
-      - lab5-web-site
 
   lab5-server:
     build:
       context: ./server
       dockerfile: Dockerfile
-    container_name: lab5-server
-    environment:
-      - PORT=5000
-      - ADMIN_PASSWORD=passwordToSet
-      - FRONTEND_URL_PROTOCOL=http://
-      - FRONTEND_URL_DOMAIN_NAME=localhost
-      - FRONTEND_URL_PORT=80
-    ports:
-      - 5000:5000
-    depends_on:
-      - lab5-db
-    networks:
-      - lab5-server
-      - lab5-web-site
-      - lab5-db
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.lab5-server.rule=Host(`localhost`) && PathPrefix(`/api`)
+      - traefik.http.services.api.loadBalancer.sticky.cookie=true
+      - traefik.http.services.api.loadBalancer.sticky.cookie.name=server-cookie
+      - traefik.http.routers.lab5-web-site.tls=true
+      - traefik.http.routers.lab5-web-site.entrypoints=https
+    deploy:
+      replicas: 5
+
+  lab5-web-site:
+    build:
+      context: ./web/site
+      dockerfile: Dockerfile
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.lab5-web-site.rule=Host(`localhost`)
+      - traefik.http.services.web.loadbalancer.server.port=80
+      - traefik.http.routers.lab5-web-site.tls=true
+      - traefik.http.routers.lab5-web-site.entrypoints=https
+    deploy:
+      replicas: 5
 
   lab5-db: #thanks to : https://github.com/bitnami/containers/blob/main/bitnami/postgresql/README.md
     image: bitnami/postgresql:latest
@@ -41,20 +37,31 @@ services:
       - POSTGRESQL_DATABASE=db_app
     volumes:
       - psql:/bitnami/postgresql
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.lab5-db.rule=Host(`localhost`)
+      - traefik.http.services.web.loadbalancer.server.port=3306
     ports:
-      - 3306:5432
-    networks:
-      - lab5-db
+      - "3307:5432"
+
+  traefik:
+    image: traefik:v2.10
+    command:
+      - --api.insecure=true  # Enable Traefik dashboard
+      - --providers.docker
+      - --log.level=INFO
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /cert:/src/cert
+      - ./traefik.yml:/etc/traefik/traefik.yml
+    ports:
+      - "80:80"
+      - "8080:8080" # Traefik dashboard
+      - "3306:3307"
+      - "443:443"
 
 volumes:
   psql:
-
-networks:
-  lab5-server:
-    name: lab5-server
-    driver: bridge
-  lab5-web-site:
-  lab5-db:
 
 #docker-compose up  --force-recreate -d
 #docker-compose down
